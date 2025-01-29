@@ -1,0 +1,10 @@
+<h2>Productos Disponibles</h2>
+<div class="products-grid">
+  {{#each products}}
+    <div class="product-card">
+      <h3>{{this.name}}</h3>
+      <p>{{this.description}}</p>
+      <button class="add-to-cart">Agregar al Carrito</button>
+    </div>
+  {{/each}}
+</div>
