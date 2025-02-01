@@ -1,13 +1,15 @@
-require('dotenv').config();
-const express = require('express');
-const cors = require('cors');
-const exphbs = require('express-handlebars');
-const mongoose = require('mongoose');
-const path = require('path');
-const authRoutes = require('./src/routes/auth.routes');
-const productRoutes = require('./src/routes/product.routes');
-const cartRoutes = require('./src/routes/cart.routes');
-const mocksRoutes = require('./src/routes/mocks.router');
+import dotenv from 'dotenv';
+import express from 'express';
+import cors from 'cors';
+import exphbs from 'express-handlebars';
+import mongoose from 'mongoose';
+import path from 'path';
+import authRoutes from './src/routes/auth.routes.js';
+import productRoutes from './src/routes/product.routes.js';
+import cartRoutes from './src/routes/cart.routes.js';
+import mocksRoutes from './src/routes/mocks.router.js';
+
+dotenv.config();
 
 const app = express();
 
@@ -19,18 +21,18 @@ app.use(express.urlencoded({ extended: true }));
 // Configuración de Handlebars
 app.engine('hbs', exphbs.engine({ extname: '.hbs' }));
 app.set('view engine', 'hbs');
-app.set('views', path.join(__dirname, 'public/views'));
+app.set('views', path.resolve('public/views'));
 
 // Archivos estáticos
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.resolve('public')));
 
 // Conectar a MongoDB
 mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
-  .then(() => console.log('Conectado a MongoDB'))
-  .catch(err => console.error('Error al conectar a MongoDB:', err));
+  .then(() => console.log('✅ Conectado a MongoDB'))
+  .catch(err => console.error('❌ Error al conectar a MongoDB:', err));
 
 // Rutas
 app.use('/auth', authRoutes);
@@ -43,8 +45,4 @@ app.get('/', (req, res) => {
   res.render('home');
 });
 
-// Puerto de escucha
-const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => {
-  console.log(`Servidor corriendo en el puerto ${PORT}`);
-});
+export default app;
