@@ -1,10 +1,6 @@
-<h2>Productos Disponibles</h2>
-<div class="products-grid">
+<h2>Productos</h2>
+<ul>
   {{#each products}}
-    <div class="product-card">
-      <h3>{{this.name}}</h3>
-      <p>{{this.description}}</p>
-      <button class="add-to-cart">Agregar al Carrito</button>
-    </div>
+    <li>{{this.name}} - ${{this.price}}</li>
   {{/each}}
-</div>
+</ul>
