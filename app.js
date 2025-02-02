@@ -4,11 +4,14 @@ import cors from 'cors';
 import exphbs from 'express-handlebars';
 import mongoose from 'mongoose';
 import path from 'path';
+import { fileURLToPath } from 'url';
+
+// Importar rutas
 import authRoutes from './src/routes/auth.routes.js';
 import productRoutes from './src/routes/product.routes.js';
 import cartRoutes from './src/routes/cart.routes.js';
-import mocksRoutes from './src/routes/mocks.router.js';
 
+// Configuración del entorno
 dotenv.config();
 
 const app = express();
@@ -21,10 +24,14 @@ app.use(express.urlencoded({ extended: true }));
 // Configuración de Handlebars
 app.engine('hbs', exphbs.engine({ extname: '.hbs' }));
 app.set('view engine', 'hbs');
-app.set('views', path.resolve('public/views'));
+
+// Configurar las rutas de las vistas
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+app.set('views', path.join(__dirname, 'public/views'));
 
 // Archivos estáticos
-app.use(express.static(path.resolve('public')));
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Conectar a MongoDB
 mongoose.connect(process.env.MONGODB_URI, {
@@ -38,7 +45,6 @@ mongoose.connect(process.env.MONGODB_URI, {
 app.use('/auth', authRoutes);
 app.use('/products', productRoutes);
 app.use('/cart', cartRoutes);
-app.use('/mocks', mocksRoutes);
 
 // Ruta principal
 app.get('/', (req, res) => {
