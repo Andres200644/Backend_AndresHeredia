@@ -9,7 +9,7 @@ import cors from 'cors';
 import authRoutes from './src/routes/auth.routes.js';
 import productRoutes from './src/routes/product.routes.js';
 import cartRoutes from './src/routes/cart.routes.js';
-import mockRoutes from './src/routes/mocks.router.js'; // ✅ Importación agregada
+import mockRoutes from './src/routes/mocks.router.js'; //agregue la nueva ruta
 
 // Configuración del entorno
 dotenv.config();
