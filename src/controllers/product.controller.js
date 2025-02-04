@@ -1,44 +1,40 @@
-import fs from 'fs/promises';
-import path from 'path';
+// src/controllers/product.controller.js
+import Product from '../models/product.model.js';
 
-const productsFilePath = path.resolve('src/data/products.json');
-
-export const getProducts = async (req, res) => {
-  try {
-    const data = await fs.readFile(productsFilePath, 'utf-8');
-    const products = JSON.parse(data);
-    res.status(200).json(products);
-  } catch (error) {
-    res.status(500).json({ message: 'Error al obtener los productos', error: error.message });
-  }
+export const getAllProducts = async (req, res) => {
+    try {
+        const products = await Product.find();
+        res.json(products);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to fetch products' });
+    }
 };
 
-export const addProduct = async (req, res) => {
-  try {
-    const { name, price, stock, description, category } = req.body;
-
-    if (!name || !price || !stock) {
-      return res.status(400).json({ message: 'Nombre, precio y stock son obligatorios' });
+export const getProductById = async (req, res) => {
+    try {
+        const product = await Product.findById(req.params.id);
+        if (!product) return res.status(404).json({ error: 'Product not found' });
+        res.json(product);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to fetch product' });
     }
+};
 
-    const data = await fs.readFile(productsFilePath, 'utf-8');
-    const products = JSON.parse(data);
+export const createProduct = async (req, res) => {
+    try {
+        const newProduct = new Product(req.body);
+        await newProduct.save();
+        res.status(201).json(newProduct);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to create product' });
+    }
+};
 
-    const newProduct = {
-      id: products.length + 1,
-      name,
-      price,
-      stock,
-      description,
-      category
-    };
-
-    products.push(newProduct);
-
-    await fs.writeFile(productsFilePath, JSON.stringify(products, null, 2));
-
-    res.status(201).json({ message: 'Producto agregado exitosamente', product: newProduct });
-  } catch (error) {
-    res.status(500).json({ message: 'Error al agregar el producto', error: error.message });
-  }
+export const deleteProduct = async (req, res) => {
+    try {
+        await Product.findByIdAndDelete(req.params.id);
+        res.json({ message: 'Product deleted' });
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to delete product' });
+    }
 };
