@@ -1,12 +1,14 @@
-import { Router } from 'express';
-import MockingController from '../controllers/mocking.controller.js';
+import express from 'express';
+import {
+  generateMockUsers,
+  generateMockPets,
+  generateAndSaveData,
+} from '../controllers/mocking.controller.js';
 
-const router = Router();
+const router = express.Router();
 
-// Generar 50 usuarios de prueba
-router.get('/mockingusers', MockingController.generateMockUsers);
-
-// Generar datos de prueba dinámicamente
-router.post('/generateData', MockingController.generateMockData);
+router.get('/mock-users', generateMockUsers);
+router.get('/mock-pets', generateMockPets);
+router.post('/generate-data', generateAndSaveData);
 
 export default router;
