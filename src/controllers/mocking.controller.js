@@ -3,28 +3,35 @@ import Pet from '../models/pet.model.js';
 import { faker } from '@faker-js/faker';
 
 export const generateMockUsers = (req, res) => {
-  const users = Array.from({ length: 10 }).map(() => ({
+  const count = parseInt(req.query.count) || 50;  // Número de usuarios a generar (por defecto 50)
+  const users = Array.from({ length: count }).map(() => ({
     name: faker.name.fullName(),
     email: faker.internet.email(),
   }));
-  res.json(users); // No guarda en la base de datos
+  res.json(users);  // No guarda en la base de datos
 };
 
 export const generateMockPets = (req, res) => {
-  const pets = Array.from({ length: 10 }).map(() => ({
+  const count = parseInt(req.query.count) || 50;  // Número de mascotas a generar (por defecto 50)
+  const pets = Array.from({ length: count }).map(() => ({
     name: faker.animal.dog(),
     breed: faker.animal.cat(),
   }));
-  res.json(pets); // No guarda en la base de datos
+  res.json(pets);  // No guarda en la base de datos
 };
 
 export const generateAndSaveData = async (req, res) => {
-  const users = Array.from({ length: 5 }).map(() => ({
+  const count = parseInt(req.query.count) || 50;  // Número de usuarios a guardar en la base de datos (por defecto 50)
+  const users = Array.from({ length: count }).map(() => ({
     name: faker.name.fullName(),
     email: faker.internet.email(),
     password: faker.internet.password(),
   }));
 
-  await User.insertMany(users);
-  res.json({ message: 'Datos generados y guardados en la base de datos' });
+  try {
+    await User.insertMany(users);
+    res.json({ message: `${count} usuarios generados y guardados en la base de datos` });
+  } catch (error) {
+    res.status(500).json({ error: 'Error al guardar los datos' });
+  }
 };
