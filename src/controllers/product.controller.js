@@ -1,4 +1,4 @@
-import Product from '../models/product.model.js'; 
+import Product from '../models/product.model.js';
 
 export const getAllProducts = async (req, res) => {
   try {
@@ -26,14 +26,5 @@ export const createProduct = async (req, res) => {
     res.status(201).json(newProduct);
   } catch (error) {
     res.status(500).json({ error: 'Failed to create product' });
-  }
-};
-
-export const deleteProduct = async (req, res) => {
-  try {
-    await Product.findByIdAndDelete(req.params.id);
-    res.json({ message: 'Product deleted' });
-  } catch (error) {
-    res.status(500).json({ error: 'Failed to delete product' });
   }
 };
