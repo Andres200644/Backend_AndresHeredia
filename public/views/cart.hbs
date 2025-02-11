@@ -1,5 +1,7 @@
-<!-- Archivo: public/views/cart.hbs -->
-{{> navbar}}
-<h1>Tu Carrito</h1>
-<p>Aquí verás tus productos agregados.</p>
-{{> footer}}
+<h1>Este es tu carrito</h1>
+<ul>
+  {{#each cartItems}}
+    <li>{{this.name}} - Quantity: {{this.quantity}}</li>
+  {{/each}}
+</ul>
+<button>Proceder a pagar</button>

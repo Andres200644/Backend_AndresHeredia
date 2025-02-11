@@ -1,9 +1,10 @@
-<!-- Archivo: public/views/login.hbs -->
-{{> navbar}}
-<h1>Iniciar Sesión</h1>
+<h1>Login</h1>
 <form action="/auth/login" method="POST">
-  <input type="email" name="email" placeholder="Correo electrónico" required>
-  <input type="password" name="password" placeholder="Contraseña" required>
-  <button type="submit">Ingresar</button>
+  <label for="email">Email:</label>
+  <input type="email" name="email" required>
+  
+  <label for="password">Password:</label>
+  <input type="password" name="password" required>
+  
+  <button type="submit">Login</button>
 </form>
-{{> footer}}

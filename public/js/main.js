@@ -1,4 +1,10 @@
+console.log("Main JS conectado correctamente");
+
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('Bienvenido!');
-  });
-  
+  const cartButton = document.getElementById('view-cart');
+  if (cartButton) {
+    cartButton.addEventListener('click', () => {
+      alert('Redirigiendo al carrito...');
+    });
+  }
+});

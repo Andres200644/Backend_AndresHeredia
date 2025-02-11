@@ -1,10 +1,10 @@
-import { Router } from 'express';
-import { getAllProducts, getProductById, createProduct } from '../controllers/product.controller.js'; // Importar usando nombres consistentes
+import express from 'express';
+import { getAllProducts, getProductById, createProduct } from '../controllers/product.controller.js';
 
-const router = Router();
+const router = express.Router();
 
-router.get('/', getAllProducts);  // Obtener todos los productos
-router.get('/:id', getProductById);  // Obtener un producto por su ID
-router.post('/', createProduct);  // Crear un nuevo producto
+router.get('/', getAllProducts);
+router.get('/:id', getProductById);
+router.post('/', createProduct);
 
 export default router;

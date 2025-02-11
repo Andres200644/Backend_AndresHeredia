@@ -1,22 +1,16 @@
-import bcrypt from 'bcrypt';
-import UserModel from '../models/user.model.js';
-import { faker } from '@faker-js/faker';
-
-class MockingDAO {
-    static async generateMockingUsers(count) {
-        const users = [];
-        for (let i = 0; i < count; i++) {
-            const hashedPassword = await bcrypt.hash('coder123', 10);
-            users.push({
-                name: faker.person.fullName(),
-                email: faker.internet.email(),
-                password: hashedPassword,
-                role: Math.random() > 0.5 ? 'user' : 'admin',
-                pets: []
-            });
-        }
-        return await UserModel.insertMany(users);
-    }
-}
-
-export default MockingDAO;
+export const generateMockUsers = (count = 5) => {
+    return Array.from({ length: count }, (_, i) => ({
+      id: i + 1,
+      name: `MockUser${i + 1}`,
+      email: `mockuser${i + 1}@mail.com`,
+    }));
+  };
+  
+  export const generateMockPets = (count = 5) => {
+    return Array.from({ length: count }, (_, i) => ({
+      id: i + 1,
+      name: `MockPet${i + 1}`,
+      type: 'Dog',
+    }));
+  };
+  

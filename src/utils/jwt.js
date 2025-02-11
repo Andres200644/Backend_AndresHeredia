@@ -1,27 +1,18 @@
-
 import jwt from 'jsonwebtoken';
-import dotenv from 'dotenv';
 
-dotenv.config();
+const secretKey = process.env.JWT_SECRET || 'defaultSecretKey';
 
-const SECRET_KEY = process.env.JWT_SECRET || 'defaultSecretKey';
-
-// Generar un token JWT
-export const generateToken = (user) => {
-    const payload = {
-        id: user._id,
-        email: user.email,
-        role: user.role
-    };
-
-    return jwt.sign(payload, SECRET_KEY, { expiresIn: '1h' });
+// Generar un token
+export const generateToken = (payload, expiresIn = '1h') => {
+  return jwt.sign(payload, secretKey, { expiresIn });
 };
 
-// Verificar un token JWT
+// Verificar un token
 export const verifyToken = (token) => {
-    try {
-        return jwt.verify(token, SECRET_KEY);
-    } catch (error) {
-        return null;
-    }
+  try {
+    return jwt.verify(token, secretKey);
+  } catch (error) {
+    throw new Error('Token inválido o expirado');
+  }
 };
+
