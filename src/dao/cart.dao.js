@@ -1,31 +1,13 @@
-import Cart from '../models/cart.model.js';
+const Cart = require("../models/cart.model");
 
-export const getCartByUserId = async (userId) => {
-  try {
-    return await Cart.findOne({ userId });
-  } catch (error) {
-    throw new Error('Error al obtener el carrito');
-  }
-};
-
-export const addItemToCart = async (userId, productId, quantity) => {
-  try {
-    let cart = await Cart.findOne({ userId });
-
-    if (!cart) {
-      cart = new Cart({ userId, items: [] });
+class CartDAO {
+    async getAll() {
+        return await Cart.find();
     }
 
-    const existingItem = cart.items.find((item) => item.productId.toString() === productId);
-    if (existingItem) {
-      existingItem.quantity += quantity;
-    } else {
-      cart.items.push({ productId, quantity });
+    async addItem(data) {
+        return await Cart.create(data);
     }
+}
 
-    await cart.save();
-    return cart;
-  } catch (error) {
-    throw new Error('Error al agregar el producto al carrito');
-  }
-};
+module.exports = new CartDAO();

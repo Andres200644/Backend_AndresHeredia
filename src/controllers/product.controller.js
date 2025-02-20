@@ -1,22 +1,23 @@
-import Product from '../models/product.model.js';
+const Product = require("../models/product.model");
 
-export const getAllProducts = async (req, res) => {
-  try {
-    const products = await Product.find();
-    res.json(products);
-  } catch (error) {
-    res.status(500).json({ error: 'Error al obtener los productos' });
-  }
-};
-
-export const getProductById = async (req, res) => {
-  try {
-    const product = await Product.findById(req.params.id);
-    if (!product) {
-      return res.status(404).json({ error: 'Producto no encontrado' });
+const getProducts = async (req, res) => {
+    try {
+        const products = await Product.find();
+        res.json(products);
+    } catch (error) {
+        res.status(500).json({ error: "Error al obtener productos" });
     }
-    res.json(product);
-  } catch (error) {
-    res.status(500).json({ error: 'Error al obtener el producto' });
-  }
 };
+
+const createProduct = async (req, res) => {
+    try {
+        const { name, price } = req.body;
+        const newProduct = new Product({ name, price });
+        await newProduct.save();
+        res.status(201).json({ message: "Producto creado" });
+    } catch (error) {
+        res.status(500).json({ error: "Error al crear producto" });
+    }
+};
+
+module.exports = { getProducts, createProduct };

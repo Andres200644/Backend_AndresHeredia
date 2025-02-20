@@ -1,19 +1,19 @@
-export const generateMockUsers = (req, res) => {
-  const count = req.query.count || 5;
-  const mockUsers = Array.from({ length: count }, (_, i) => ({
-    id: i + 1,
-    name: `User${i + 1}`,
-    email: `user${i + 1}@mail.com`,
-  }));
-  res.json(mockUsers);
+const { faker } = require("@faker-js/faker");
+
+const generateMockData = (req, res) => {
+    const mockUsers = Array.from({ length: 5 }, () => ({
+        name: faker.person.fullName(),
+        email: faker.internet.email(),
+        password: faker.internet.password(),
+    }));
+
+    const mockPets = Array.from({ length: 5 }, () => ({
+        name: faker.animal.dog(),
+        breed: faker.animal.cat(),
+        age: faker.number.int({ min: 1, max: 15 }),
+    }));
+
+    res.json({ users: mockUsers, pets: mockPets });
 };
 
-export const generateMockPets = (req, res) => {
-  const count = req.query.count || 5;
-  const mockPets = Array.from({ length: count }, (_, i) => ({
-    id: i + 1,
-    name: `Pet${i + 1}`,
-    type: 'Dog',
-  }));
-  res.json(mockPets);
-};
+module.exports = { generateMockData };

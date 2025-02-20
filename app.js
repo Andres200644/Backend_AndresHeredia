@@ -1,56 +1,70 @@
-import express from 'express';
-import mongoose from 'mongoose';
-import dotenv from 'dotenv';
-import cors from 'cors';
-import { engine } from 'express-handlebars';
-import path from 'path';
-import { fileURLToPath } from 'url';
+const express = require("express");
+const path = require("path");
+const exphbs = require("express-handlebars");
+const cookieParser = require("cookie-parser");
+const session = require("express-session");
+const MongoStore = require("connect-mongo");
+const cors = require("cors");
+const dotenv = require("dotenv");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const swaggerJsdoc = require("swagger-jsdoc");
+const swaggerUi = require("swagger-ui-express");
+const multer = require("multer");
 
-// Importar rutas
-import authRoutes from './src/routes/auth.routes.js';
-import productRoutes from './src/routes/product.routes.js';
-import cartRoutes from './src/routes/cart.routes.js';
-import mockRoutes from './src/routes/mocks.router.js';
+const authRoutes = require("./src/routes/auth.routes");
+const productRoutes = require("./src/routes/product.routes");
+const cartRoutes = require("./src/routes/cart.routes");
+const mocksRouter = require("./src/routes/mocks.router");
 
-// Configuración de variables de entorno
 dotenv.config();
-
 const app = express();
 
-// Middlewares
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+app.use(
+    session({
+        secret: process.env.SESSION_SECRET,
+        resave: false,
+        saveUninitialized: true,
+        store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
+    })
+);
 
 // Configuración de Handlebars
-app.engine('hbs', engine({ extname: '.hbs' }));
-app.set('view engine', 'hbs');
+app.engine("hbs", exphbs.engine({
+    extname: ".hbs",
+    defaultLayout: "main",
+    layoutsDir: path.join(__dirname, "public", "views", "layouts"),
+    partialsDir: path.join(__dirname, "public", "views", "partials"),
+}));
+app.set("view engine", "hbs");
+app.set("views", path.join(__dirname, "public", "views"));
 
-// Configurar las rutas de las vistas
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-app.set('views', path.join(__dirname, 'public/views'));
+// Configuración de Swagger
+const swaggerOptions = {
+    definition: {
+        openapi: "3.0.0",
+        info: {
+            title: "RunwayStyle API",
+            version: "1.0.0",
+            description: "Documentación de la API de RunwayStyle",
+        },
+    },
+    apis: ["./src/routes/*.js"],
+};
+const swaggerDocs = swaggerJsdoc(swaggerOptions);
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+
+// Rutas
+app.use("/api/auth", authRoutes);
+app.use("/api/products", productRoutes);
+app.use("/api/cart", cartRoutes);
+app.use("/api/mocks", mocksRouter);
 
 // Archivos estáticos
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, "public")));
 
-// Conectar a MongoDB
-mongoose.connect(process.env.MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-})
-.then(() => console.log('✅ Conectado a MongoDB'))
-.catch(err => console.error('❌ Error al conectar a MongoDB:', err));
-
-// Configuración de rutas
-app.use('/auth', authRoutes);
-app.use('/products', productRoutes);
-app.use('/cart', cartRoutes);
-app.use('/api/mocks', mockRoutes);
-
-// Ruta principal
-app.get('/', (req, res) => {
-    res.render('home');
-});
-
-export default app;
+module.exports = app;

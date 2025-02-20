@@ -1,9 +1,8 @@
-import express from 'express';
-import { generateMockUsers, generateMockPets } from '../controllers/mocking.controller.js';
+const express = require("express");
+const { generateMockData } = require("../controllers/mocking.controller");
 
 const router = express.Router();
 
-router.get('/mockingusers', generateMockUsers);
-router.get('/mockingpets', generateMockPets);
+router.get("/", generateMockData);
 
-export default router;
+module.exports = router;

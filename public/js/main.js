@@ -1,15 +1,11 @@
-// main.js
-document.addEventListener("DOMContentLoaded", function () {
-    console.log("JavaScript cargado correctamente.");
+document.addEventListener("DOMContentLoaded", () => {
+    console.log("RunwayStyle está funcionando correctamente.");
 
-    const navLinks = document.querySelectorAll("nav a");
-    navLinks.forEach(link => {
-        link.addEventListener("click", function (event) {
-            event.preventDefault();
-            const target = document.querySelector(this.getAttribute("href"));
-            if (target) {
-                target.scrollIntoView({ behavior: "smooth" });
-            }
+    // Lógica para manejar el carrito de compras
+    const cartButtons = document.querySelectorAll(".add-to-cart");
+    cartButtons.forEach(button => {
+        button.addEventListener("click", () => {
+            alert("Producto agregado al carrito.");
         });
     });
 });

@@ -1,7 +1,11 @@
-<h1>Este es tu carrito</h1>
+<h1>Tu Carrito</h1>
 <ul>
-  {{#each cartItems}}
-    <li>{{this.name}} - Quantity: {{this.quantity}}</li>
-  {{/each}}
+    {{#each cart}}
+        <li>
+            <h3>{{this.name}}</h3>
+            <p>Precio: ${{this.price}}</p>
+            <button>Eliminar</button>
+        </li>
+    {{/each}}
 </ul>
-<button>Proceder a pagar</button>
+<a href="/checkout">Finalizar compra</a>
