@@ -1,10 +1,15 @@
-console.log("Main JS conectado correctamente");
+// main.js
+document.addEventListener("DOMContentLoaded", function () {
+    console.log("JavaScript cargado correctamente.");
 
-document.addEventListener('DOMContentLoaded', () => {
-  const cartButton = document.getElementById('view-cart');
-  if (cartButton) {
-    cartButton.addEventListener('click', () => {
-      alert('Redirigiendo al carrito...');
+    const navLinks = document.querySelectorAll("nav a");
+    navLinks.forEach(link => {
+        link.addEventListener("click", function (event) {
+            event.preventDefault();
+            const target = document.querySelector(this.getAttribute("href"));
+            if (target) {
+                target.scrollIntoView({ behavior: "smooth" });
+            }
+        });
     });
-  }
 });
