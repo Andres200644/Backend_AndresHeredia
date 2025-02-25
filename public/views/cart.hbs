@@ -1,11 +1,15 @@
-<h1>Tu Carrito</h1>
-<ul>
-    {{#each cart}}
-        <li>
-            <h3>{{this.name}}</h3>
-            <p>Precio: ${{this.price}}</p>
-            <button>Eliminar</button>
-        </li>
-    {{/each}}
-</ul>
-<a href="/checkout">Finalizar compra</a>
+<div class="container">
+    <h1>Carrito de Compras</h1>
+    <div class="cart-items">
+        {{#each cart}}
+        <div class="cart-item">
+            <h2>{{this.name}}</h2>
+            <p>{{this.price}} USD</p>
+            <button class="button" onclick="removeFromCart('{{this.id}}')">Eliminar</button>
+        </div>
+        {{/each}}
+    </div>
+    <button class="button">Finalizar Compra</button>
+</div>
+
+<script src="/js/main.js"></script>

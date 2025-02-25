@@ -1,8 +1,8 @@
-const express = require("express");
-const { generateMockData } = require("../controllers/mocking.controller");
+const express = require('express');
+const { generateMockProducts } = require('../controllers/mocks.controller');
 
 const router = express.Router();
 
-router.get("/", generateMockData);
+router.get('/products', generateMockProducts);
 
 module.exports = router;

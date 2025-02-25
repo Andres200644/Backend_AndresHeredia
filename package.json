@@ -11,7 +11,7 @@
   "author": "Andrés Heredia",
   "license": "MIT",
   "dependencies": {
-    "@faker-js/faker": "^8.0.0",
+    "@faker-js/faker": "^8.4.1",
     "@nestjs/mongoose": "^11.0.1",
     "bcryptjs": "^2.4.3",
     "connect-mongo": "^5.1.0",
@@ -28,9 +28,9 @@
     "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
-    "chai": "^5.1.2",
+    "chai": "^5.2.0",
     "mocha": "^11.1.0",
-    "nodemon": "^3.0.1",
+    "nodemon": "^3.1.9",
     "supertest": "^7.0.0"
   },
   "repository": {

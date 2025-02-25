@@ -1,10 +1,15 @@
-<h1>Catálogo de Productos</h1>
-<ul>
-    {{#each products}}
-        <li>
-            <h3>{{this.name}}</h3>
-            <p>Precio: ${{this.price}}</p>
-            <button class="add-to-cart">Agregar al carrito</button>
-        </li>
-    {{/each}}
-</ul>
+<div class="container">
+    <h1>Nuestros Productos</h1>
+    <div class="product-list">
+        {{#each products}}
+        <div class="product-card">
+            <img src="{{this.image}}" alt="{{this.name}}">
+            <h2>{{this.name}}</h2>
+            <p>{{this.price}} USD</p>
+            <button class="button" onclick="addToCart('{{this.id}}')">Agregar al carrito</button>
+        </div>
+        {{/each}}
+    </div>
+</div>
+
+<script src="/js/main.js"></script>
