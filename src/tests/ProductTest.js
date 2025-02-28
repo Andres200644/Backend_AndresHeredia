@@ -1,29 +1,16 @@
-import request from "supertest";
-import app from "../app.js";
-import { expect } from "chai";
+const request = require('supertest');
+const app = require('../src/app');
 
-describe("Products API Tests", () => {
-  it("Debe obtener la lista de productos", async () => {
-    const res = await request(app).get("/api/products");
-    expect(res.status).to.equal(200);
-    expect(res.body).to.be.an("array");
+describe('Product API Tests', () => {
+  it('Debe obtener todos los productos', async () => {
+    const res = await request(app).get('/api/products');
+    expect(res.statusCode).toBe(200);
+    expect(Array.isArray(res.body)).toBe(true);
   });
 
-  it("Debe agregar un producto (requiere autenticación)", async () => {
-    const token = "TOKEN_DE_PRUEBA"; // Reemplazar con un token válido
-
-    const res = await request(app)
-      .post("/api/products")
-      .set("Authorization", `Bearer ${token}`)
-      .send({
-        name: "Producto de prueba",
-        description: "Descripción del producto",
-        price: 99.99,
-        stock: 10,
-        category: "Deportes",
-      });
-
-    expect(res.status).to.equal(201);
-    expect(res.body).to.have.property("name");
+  it('Debe obtener un producto específico', async () => {
+    const res = await request(app).get('/api/products/1');
+    expect(res.statusCode).toBe(200);
+    expect(res.body).toHaveProperty('id', 1);
   });
 });

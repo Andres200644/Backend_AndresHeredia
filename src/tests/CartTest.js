@@ -1,30 +1,19 @@
-import request from "supertest";
-import app from "../app.js";
-import { expect } from "chai";
+const request = require('supertest');
+const app = require('../src/app');
 
-describe("Cart API Tests", () => {
-  it("Debe obtener el carrito del usuario", async () => {
-    const token = "TOKEN_DE_PRUEBA";
-
+describe('Cart API Tests', () => {
+  it('Debe agregar un producto al carrito', async () => {
     const res = await request(app)
-      .get("/api/cart")
-      .set("Authorization", `Bearer ${token}`);
+      .post('/api/cart')
+      .send({ productId: '123', quantity: 2 });
 
-    expect(res.status).to.equal(200);
-    expect(res.body).to.have.property("items");
+    expect(res.statusCode).toBe(200);
+    expect(res.body).toHaveProperty('message', 'Producto agregado al carrito');
   });
 
-  it("Debe agregar un producto al carrito", async () => {
-    const token = "TOKEN_DE_PRUEBA";
-    const res = await request(app)
-      .post("/api/cart")
-      .set("Authorization", `Bearer ${token}`)
-      .send({
-        productId: "PRODUCT_ID_DE_PRUEBA",
-        quantity: 2,
-      });
-
-    expect(res.status).to.equal(200);
-    expect(res.body).to.have.property("message");
+  it('Debe obtener el carrito', async () => {
+    const res = await request(app).get('/api/cart');
+    expect(res.statusCode).toBe(200);
+    expect(Array.isArray(res.body)).toBe(true);
   });
 });
