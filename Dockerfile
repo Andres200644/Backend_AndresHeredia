@@ -1,19 +1,17 @@
-# Usar una imagen base de Node.js
-FROM node:18
+# Usa una imagen base de Node.js
+FROM node:18-alpine
 
-# Establecer el directorio de trabajo dentro del contenedor
+# Establece el directorio de trabajo dentro del contenedor
 WORKDIR /app
 
-# Copiar package.json y package-lock.json
-COPY package*.json ./
-
-# Instalar dependencias
+# Copia los archivos de la aplicación al contenedor
+COPY package.json package-lock.json ./
 RUN npm install
 
-# Copiar el resto del código del proyecto
+# Copia el resto de los archivos del proyecto
 COPY . .
 
-# Exponer el puerto en el que corre la app
+# Expone el puerto en el que corre la aplicación
 EXPOSE 8080
 
 # Comando para ejecutar la aplicación
